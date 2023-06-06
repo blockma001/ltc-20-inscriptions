@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFTPort- NFT landing page HTML Template</title>
+    <link rel="shortcut icon" href="assets/picture/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/aos.css">
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/lightcase.css">
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<style>
+    .miniButtonDisable{
+        pointer-events:none;
+        background-color:#6c757d;
+    }
+
+
+
+    .sp {
+        width: 32px;
+        height: 32px;
+        clear: both;
+        margin: 20px auto;
+    }
+
+    /* Spinner Circle Rotation */
+    .sp-circle {
+        border: 4px rgba(0, 0, 0, 0.25) solid;
+        border-top: 4px black solid;
+        border-radius: 50%;
+        -webkit-animation: spCircRot .6s infinite linear;
+        animation: spCircRot .6s infinite linear;
+    }
+
+    @-webkit-keyframes spCircRot {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+    @keyframes spCircRot {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(359deg);
+        }
+    }
+
+    .modal-bodys>p {
+        font-size: 1.125rem;
+        color: #fff;
+    }
+</style>
+<body>
+    <div class="preloader"><img src="assets/picture/s-04.png" alt="Apes land" style="width: 100px"></div>
+    <header class="header-section">
+        <div class="header-bottom">
+            <div class="container">
+                <div class="header-wrapper">
+                    <div class="logo"><a href="index.html"><img src="assets/picture/lo.png" alt="logo" style="width: 200px;"></a></div>
+                    <div class="menu-area">
+
+                        <div class="header-btn"><a href="https://discord.gg/rGRYHRWExw" target="_blank"  class="default-btn default-btn--secondary"><span>Join <i
+                                        class="fa-brands fa-discord"></i></span></a></div>
+                        <div class="header-bar d-lg-none"><span></span><span></span><span></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="wallet-modal modal fade" id="wallet-option" tabindex="-1" aria-labelledby="choose-wallet"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="choose-wallet">Payment Instructions</h5><button type="button"
+                        class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-bodys">
+                    <p>Please continue your payment on new page</p>
+                    <p>We connected to Mixpay</p>
+                    <p>USDT,LTC,BTC are supported</p>
+                    <p>After completing the payment, you can </br>  return to the website to check the results.</p>
+
+                    <a id="toPayButton" class="default-btn default-btn--secondary" onclick="toPay()" data-bs-dismiss="modal" aria-label="Close">to Pay Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="about padding-top" id="about">
+        <div class="container">
+            <div class="about__wrapper">
+                <div class="row g-5">
+                    <div class="col-lg-6" style="margin-top: 160px;">
+                        <div class="about__thumb" data-aos="fade-up" data-aos-duration="1500">
+                            <img src="assets/picture/20230603005658896.GIF" alt="About Image"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="about__content" data-aos="fade-up" data-aos-duration="2000">
+                            <div class="mint-step">
+                                <p class="subtitle color--secondary-color">Easy Steps</p>
+                                <h3>How to Mint</h3>
+                                <p>Please follow the steps below.</p>
+                                <ul class="mint-step__list">
+                                    <li class="mint-step__list-item"><span
+                                            class="color--secondary-color">1.</span>Fill In Address And Quantity
+                                    </li>
+                                    <li class="mint-step__list-item"><span
+                                            class="color--secondary-color">2.</span>Click The Mint Button
+                                    </li>
+                                    <li class="mint-step__list-item"><span class="color--theme-color">3.</span>Pay On The New Page
+                                    </li>
+                                    <li class="mint-step__list-item"><span class="color--theme-color">4.</span>Receive Your NFTs (In 24h)
+                                    </li>
+                                </ul>
+
+                                <div class="widget widget-search" style="margin-bottom:0px">
+                                    <div class="widget-search-inner" style="padding: 10px">
+                                        <div>
+                                            <label style="margin-left: 10px">Wallet Address</label>
+                                            <label id="remainText" style="margin-right: 10px;float: right">Available To Mint: 0/10000</label>
+                                        </div>
+                                        <div class="input-group">
+                                            <input id="payerAddress" type="text" class="form-control w-45" style="margin: 10px"
+                                                   placeholder="Enter Litecoin Address" aria-label="Search bar">
+<!--                                            <input type="text" class="form-control w-45" style="margin: 10px"-->
+<!--                                                   placeholder="Search here" aria-label="Search bar">-->
+                                            <div style="width: 47%;margin: 10px;background: #030b21; display: flex;align-items: center;">
+                                                <div  style="float: right">
+<!--                                                    <i class="fab fa-bitcoin" style="height: 20px;margin-left: 10px"></i>-->
+                                                    <img src="assets/picture/ltcIcon.png" style="margin:0px 10px;width: 30px;background-color: white;border-radius: 3.25rem;">
+                                                    <span id="totalFee"> 0.0 LTC(≈ 0.0 USD)</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div>
+                                            <label style="margin-left: 10px">Quantity</label>
+                                        </div>
+                                        <div class="input-group">
+                                            <div style="width: 47%;margin: 10px;background: #030b21; display: flex;align-items: center;">
+                                                <div class="col-lg-8" style="float: left">
+                                                    <button id="numReduce" class="rounded" style="margin-left: 13px;"> -
+                                                    </button>
+                                                    <input id="numValue" type="text" style="width: 60%; background-color: #030b21;border: 0;padding: 2px; color: #ddd;text-align: center;" disabled value="1">
+                                                    <button id="numPlus" class="rounded" style="float: right"> +
+                                                    </button>
+                                                </div>
+                                                <div class="col-lg-3" style="float: right">
+                                                    <button id="numToMax" class="rounded" style="float: right">
+                                                        Max
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div id="toPayDiv" class="col-lg-5" style="margin: 10px;">
+                                                <a class="default-btn default-btn--secondary" data-bs-toggle="modal" data-bs-target="#wallet-option">Mint Now</a>
+<!--                                                <a id="toPayButton" class="default-btn default-btn&#45;&#45;secondary" data-bs-toggle="modal" data-bs-target="#wallet-option" onclick="toPay()">Mint Now</a>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="widget widget-search">
+
+                                    <div  class="col-lg-12" style="float: right">
+                                        <div class="widget-search-inner" style="padding: 10px;margin-top: 10px;">
+                                            <div id="tm-if-expired">
+                                                <h5 style="margin-left: 10px;color: red">Please make payment on the new page. </h5>
+                                            <!--    <label id="tm-count-minutes" style="margin-left: 10px">00</label>
+                                                <label style="margin-left: 10px">:</label>
+                                                <label id="tm-count-seconds" style="margin-left: 10px">00</label>-->
+                                            </div>
+                                        </div>
+                                        <div class="widget-search-inner" style="padding: 10px;margin-top: 10px;">
+                                            <div>
+                                                <h5 style="margin-left: 10px;color: red">Do not close this page or browser!</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" style="background-image: url(assets/picture/bg.png);">
+        <div class="footer__wrapper padding-top padding-bottom">
+            <div class="container">
+                <div class="footer__content text-center"><a class="mb-4 d-inline-block" href=""><img
+                        src="assets/picture/lo.png" alt="Logo" style="width: 200px;"></a>
+                    <ul class="social justify-content-center">
+                        <li class="social__item"><a href="https://twitter.com/LTC_Unicorn" target="_blank" class="social__link"><i class="fab fa-twitter"></i></a>
+                        </li>
+                        <li class="social__item"><a href="https://discord.gg/rGRYHRWExw" target="_blank" class="social__link"><i class="fab fa-discord"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer__copyright">
+            <div class="container">
+                <div class="text-center py-4">
+                    <p class=" mb-0">© 2023 | All Rights by <a href="javascript:;">LTC UNICORN</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/all.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/aos.js"></script>
+    <script src="assets/js/countdown.min.js"></script>
+    <script src="assets/js/lightcase.js"></script>
+    <script src="assets/js/purecounter_vanilla.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/crypto-js.min.js"></script>
+    <script src="assets/js/index.js"></script>
+</body>
+
+</html>

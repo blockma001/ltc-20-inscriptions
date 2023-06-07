@@ -10,8 +10,8 @@ numPlusButton.onclick = numPlus
 numReduceButton.onclick = numReduce
 numToMaxButton.onclick = numToMax
 
-let maxNum = 3;
-let unitPrice = 0.1;
+let maxNum = 10;
+let unitPrice = 0.015;
 let priceUSD = 92.53;
 let totalLTC = 0;
 let totalUSD = 0;
@@ -64,10 +64,12 @@ function toPay() {
       console.log(resultRes);
       if (resultRes.code === 0) {
         onceOrderId = resultRes.data.code;
+        let orderNum = $("#numValue").val();
         // 请求后端接口，存入数据库
         let addObj ={
           "address":payerAddress,
           "orderCode":onceOrderId,
+          "orderNum":orderNum
         }
         $.ajax({
           url: v3UrlStr + 'addOrder',

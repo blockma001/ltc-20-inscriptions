@@ -11,7 +11,7 @@ numReduceButton.onclick = numReduce
 numToMaxButton.onclick = numToMax
 
 let maxNum = 10;
-let unitPrice = 0.015;
+let unitPrice = 0.15;
 let priceUSD = 92.53;
 let totalLTC = 0;
 let totalUSD = 0;

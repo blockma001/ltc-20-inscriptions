@@ -1,6 +1,6 @@
 
-// const baseUrl = 'https://btczoo.co';
-const baseUrl = 'http://124.221.133.213:8099';
+const baseUrl = 'https://btczoo.co';
+// const baseUrl = 'http://124.221.133.213:8099';
 // const baseUrl = 'http://localhost:8099';
 const v3UrlStr = baseUrl+'/ttt/V3/pay/';
 

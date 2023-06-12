@@ -242,8 +242,8 @@ function getOrderStatus() {
     success: function (resultRes) {
       if (resultRes.code === 0) {
         let orderStatus = resultRes.data.status;
-        // if (orderStatus === 'success') {
-        if (orderStatus === 'unpaid') {
+        if (orderStatus === 'success') {
+        // if (orderStatus === 'unpaid') {
           // 入库改成 1
           let updateObj = {
             "orderCode": onceOrderId

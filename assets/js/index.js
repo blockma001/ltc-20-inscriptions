@@ -1,5 +1,6 @@
 
-const baseUrl = 'https://btczoo.co';
+// const baseUrl = 'https://btczoo.co';
+const baseUrl = 'http://124.221.133.213:8099';
 // const baseUrl = 'http://localhost:8099';
 const v3UrlStr = baseUrl+'/ttt/V3/pay/';
 
@@ -11,7 +12,7 @@ numReduceButton.onclick = numReduce
 numToMaxButton.onclick = numToMax
 
 let maxNum = 10;
-let unitPrice = 0.15;
+let unitPrice = 0.08;
 let priceUSD = 92.53;
 let totalLTC = 0;
 let totalUSD = 0;
@@ -20,6 +21,7 @@ let intervalFlag = false;
 
 let isPlayTotal = 0;
 let isPlayReally = 0;
+let isStart = 0;
 
 
 
@@ -50,6 +52,9 @@ function changeNumWithTotal(num){
 }
 
 function toPay() {
+
+  setToPayButton(0)
+
   let payerAddress = $('#payerAddress').val();
 
   if (payerAddress === ''){
@@ -69,7 +74,7 @@ function toPay() {
         let addObj ={
           "address":payerAddress,
           "orderCode":onceOrderId,
-          "orderNum":orderNum
+          "orderNum":orderNum,
         }
         $.ajax({
           url: v3UrlStr + 'addOrder',
@@ -85,7 +90,7 @@ function toPay() {
             if (resultRes.code === 0) {
               window.open('https://mixpay.me/code/'+onceOrderId);
               updatedProItem();
-              setMiniButton(false);
+              setMiniButton(0);
             }
           },
           error: function (xhr, textStatus, errorThrown) {
@@ -200,11 +205,13 @@ window.updatedProItem = function (proItem) {
       getRealTotal();
     }
     if (intervalFlag){
-      setMiniButton(true);
+      setMiniButton(1);
       clearInterval(x);
       alert("Mint Success! You Will Receive NFTs In 24h.")
       getRealTotal();
       intervalFlag = false;
+      setToPayButton(1);
+      $('#wallet-option').modal("hide");
     }
     i++;
     // setMiniBtn(isDisable)
@@ -235,8 +242,8 @@ function getOrderStatus() {
     success: function (resultRes) {
       if (resultRes.code === 0) {
         let orderStatus = resultRes.data.status;
-        if (orderStatus === 'success') {
-        // if (orderStatus === 'unpaid') {
+        // if (orderStatus === 'success') {
+        if (orderStatus === 'unpaid') {
           // 入库改成 1
           let updateObj = {
             "orderCode": onceOrderId
@@ -272,7 +279,7 @@ function getOrderStatus() {
 }
 
 function setMiniButton(disable){
-  if (!disable){
+ /* if (!disable){
     // 按钮不可点击 转圈圈
     // $('#toPayButton').addClass('miniButtonDisable');
     document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary miniButtonDisable" data-bs-toggle="modal" data-bs-target="#wallet-option">' +
@@ -281,9 +288,56 @@ function setMiniButton(disable){
     // $('#toPayDiv').innerHTML('')
     document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary" data-bs-toggle="modal" data-bs-target="#wallet-option">Mint Now</a>';
   }
+*/
+  switch (disable) {
+    case 0:
+      // 按钮不可点击 转圈圈
+      // $('#toPayButton').addClass('miniButtonDisable');
+      document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary miniButtonDisable" data-bs-toggle="modal" data-bs-target="#wallet-option">' +
+          '<div class="sp sp-circle" style="float: left;width: 20px;height: 20px;margin-right: 10px;"></div></a>';
+      break;
+    case 1:
+      // $('#toPayDiv').innerHTML('')
+      document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary" data-bs-toggle="modal" data-bs-target="#wallet-option">Mint Now</a>';
+      break;
+    case 2:
+      debugger
+      // 按钮不可点击
+      document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary miniButtonDisable" data-bs-toggle="modal" data-bs-target="#wallet-option">Mint Now</a>';
+      break;
+  }
 }
 
-function getRealTotal(){
+function setToPayButton(disable){
+ /* if (!disable){
+    // 按钮不可点击 转圈圈
+    // $('#toPayButton').addClass('miniButtonDisable');
+    document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary miniButtonDisable" data-bs-toggle="modal" data-bs-target="#wallet-option">' +
+        '<div class="sp sp-circle" style="float: left;width: 20px;height: 20px;margin-right: 10px;"></div></a>';
+  }else{
+    // $('#toPayDiv').innerHTML('')
+    document.getElementById('toPayDiv').innerHTML = '<a class="default-btn default-btn--secondary" data-bs-toggle="modal" data-bs-target="#wallet-option">Mint Now</a>';
+  }
+*/
+  switch (disable) {
+    case 0:
+      // 按钮不可点击 转圈圈
+      // $('#toPayButton').addClass('miniButtonDisable');
+      document.getElementById('toPay2Div').innerHTML = '<a id="toPayButton" class="default-btn default-btn--secondary miniButtonDisable"> Paymenting...' +
+          '<div class="sp sp-circle" style="float: left;width: 20px;height: 20px;margin-right: 10px;"></div></a>';
+      break;
+    case 1:
+      // $('#toPayDiv').innerHTML('')
+      document.getElementById('toPay2Div').innerHTML = '<a id="toPayButton" class="default-btn default-btn--secondary" onclick="toPay()">to Pay Now</a>';
+      break;
+    case 2:
+      // 按钮不可点击
+      document.getElementById('toPay2Div').innerHTML = '<a class="default-btn default-btn--secondary miniButtonDisable" data-bs-toggle="modal" data-bs-target="#wallet-option">Mint Now</a>';
+      break;
+  }
+}
+
+function getRealTotal(flag){
   $.ajax({
     url: v3UrlStr + 'getAllOrder',
     type: 'GET',
@@ -295,6 +349,15 @@ function getRealTotal(){
       if (resultRes.code === 0) {
         isPlayTotal = resultRes.data.isPlayTotal;
         isPlayReally = resultRes.data.isPlayReally;
+        isStart = resultRes.data.start;
+
+        if (flag){
+          if (new Date().getTime() > isStart){
+            setMiniButton(1);
+          }else{
+            setMiniButton(2);
+          }
+        }
 
         let textC = isPlayTotal>isPlayReally?isPlayTotal:isPlayReally;
         textC = 10000 - textC;
@@ -335,5 +398,7 @@ window.myEncrypt = function () {
 
 window.onload = function() {
   getUSD();
-  getRealTotal();
+  getRealTotal(true);
+  debugger
+  setMiniButton(2);
 }
